@@ -35,6 +35,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomUserName}}\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"New York\",\n    \"interests\": [\"Reading\", \"Traveling\", \"Coding\"],\n    \"profilePicture\": \"https://example.com/profile.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserProfile Creation - Duplicate Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});",
+									"",
+									"pm.test(\"error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Profile with this name already exists\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
 							"raw": "{\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"New York\",\n    \"interests\": [\"Reading\", \"Traveling\", \"Coding\"],\n    \"profilePicture\": \"https://example.com/profile.jpg\"\n}",
 							"options": {
 								"raw": {
@@ -319,7 +363,7 @@
 					"response": []
 				},
 				{
-					"name": "UserProfile Creation - Copy",
+					"name": "UserProfile Creation - Empty Interests",
 					"event": [
 						{
 							"listen": "test",
@@ -330,7 +374,7 @@
 									"});",
 									"",
 									"pm.test(\"error\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing gender.\");",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing interests.\");",
 									"});"
 								],
 								"type": "text/javascript",
@@ -343,7 +387,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"New York\",\n    \"interests\": [\"Reading\", \"Traveling\", \"Coding\"],\n    \"profilePicture\": \"https://example.com/profile.jpg\"\n}",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"dukinberg\",\n    \"interests\": \"\",\n    \"profilePicture\": \"https://example.com/profile.jpg\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -363,7 +407,7 @@
 					"response": []
 				},
 				{
-					"name": "UserProfile Creation - Copy",
+					"name": "UserProfile Creation - Empty profilePicture",
 					"event": [
 						{
 							"listen": "test",
@@ -374,7 +418,7 @@
 									"});",
 									"",
 									"pm.test(\"error\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing gender.\");",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing profile picture URL\");",
 									"});"
 								],
 								"type": "text/javascript",
@@ -387,7 +431,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"New York\",\n    \"interests\": [\"Reading\", \"Traveling\", \"Coding\"],\n    \"profilePicture\": \"https://example.com/profile.jpg\"\n}",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"New York\",\n    \"interests\": [\"Reading\", \"Traveling\", \"Coding\"],\n    \"profilePicture\": \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -407,7 +451,7 @@
 					"response": []
 				},
 				{
-					"name": "UserProfile Creation - Copy",
+					"name": "UserProfile Creation - Invalid Profile picture",
 					"event": [
 						{
 							"listen": "test",
@@ -418,7 +462,7 @@
 									"});",
 									"",
 									"pm.test(\"error\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing gender.\");",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing profile picture URL.\");",
 									"});"
 								],
 								"type": "text/javascript",
@@ -431,7 +475,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"New York\",\n    \"interests\": [\"Reading\", \"Traveling\", \"Coding\"],\n    \"profilePicture\": \"https://example.com/profile.jpg\"\n}",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"gender\": \"Male\",\n    \"location\": \"New York\",\n    \"interests\": [\"Reading\", \"Traveling\", \"Coding\"],\n    \"profilePicture\": \"Valid Image\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -445,6 +489,231 @@
 							],
 							"path": [
 								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Login",
+			"item": [
+				{
+					"name": "User Login -Valid Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Login successful.\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"maud.ortiz@example.com\",\n    \"password\": \"defaultPassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login - Empty Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing email.\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"\",\n    \"password\": \"defaultPassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login - Invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing email.\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"JohnDoe\",\n    \"password\": \"defaultPassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login - Empty Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing password.\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"maud.ortiz@example.com\",\n    \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login - Wrong Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Incorrect email or password.\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"maud.ortiz@example.com\",\n    \"password\": \"Micmaoio\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
 							]
 						}
 					},

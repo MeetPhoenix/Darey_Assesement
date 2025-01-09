@@ -9,8 +9,10 @@ app.use(bodyParser.json());
 // Mock databases
 const profiles = [];
 const users = [
-    { email: 'test@example.com', password: 'password123' } // Mock user for login
+    { email: 'test@example.com', password: 'password123' },
+    { email: 'user1@example.com', password: 'password1' } // Add this user
 ];
+
 
 // Helper function to validate email format
 function isValidEmail(email) {
@@ -61,7 +63,17 @@ app.post('/profile', (req, res) => {
 
     // Add profile to mock database
     profiles.push({ name, age, gender, location, interests, profilePicture });
-    res.status(201).json({ message: 'Profile created successfully.' });
+
+    // Dynamically create a login user
+    const email = `${name.toLowerCase().replace(/\\s+/g, '')}@example.com`; // Generate email from name
+    const password = 'defaultPassword'; // Assign a default password
+    users.push({ email, password }); // Add user to the mock user database
+
+    // Respond with profile creation and login details
+    res.status(201).json({
+        message: 'Profile created successfully.',
+        loginDetails: { email, password } // Return login credentials
+    });
 });
 
 // POST /login endpoint
