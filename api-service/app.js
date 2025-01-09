@@ -39,8 +39,10 @@ app.post('/profile', (req, res) => {
     if (!age || typeof age !== 'number' || age <= 0) {
         return res.status(400).json({ error: 'Invalid or missing age.' });
     }
-    if (!gender || typeof gender !== 'string') {
-        return res.status(400).json({ error: 'Invalid or missing gender.' });
+    const ALLOWED_GENDERS = ['male', 'female']; // Use lowercase for comparison
+
+    if (!gender || typeof gender !== 'string' || !ALLOWED_GENDERS.includes(gender.toLowerCase())) {
+        return res.status(400).json({ error: `Invalid or missing gender. Allowed values are: ${ALLOWED_GENDERS.join(', ')}.` });
     }
     if (!location || typeof location !== 'string') {
         return res.status(400).json({ error: 'Invalid or missing location.' });
